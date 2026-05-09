@@ -1,11 +1,10 @@
 {
-	"id": "sample-plugin",
-	"name": "Sample Plugin",
-	"version": "1.0.0",
+	"id": "tundratoad",
+	"name": "Tundra Toad",
+	"version": "0.1.0",
 	"minAppVersion": "0.15.0",
-	"description": "Demonstrates some of the capabilities of the Obsidian API.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
-	"isDesktopOnly": false
+	"description": "Tracks file open, write, and delete events and writes each as a timestamped JSON record.",
+	"author": "taylormonacelli",
+	"authorUrl": "https://github.com/gkwa",
+	"isDesktopOnly": true
 }
