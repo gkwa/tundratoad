@@ -1,6 +1,6 @@
 import * as obsidian from 'obsidian';
 
-export type EventType = 'open' | 'write' | 'delete';
+export type EventType = 'open' | 'delete';
 
 interface FileEvent {
 	path: string;

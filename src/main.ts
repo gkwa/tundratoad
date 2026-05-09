@@ -11,13 +11,6 @@ export default class TundraToadPlugin extends obsidian.Plugin {
 		);
 
 		this.registerEvent(
-			this.app.vault.on('modify', (file: obsidian.TAbstractFile) => {
-				if (!(file instanceof obsidian.TFile)) return;
-				tracker.record(this.app, file, 'write');
-			})
-		);
-
-		this.registerEvent(
 			this.app.vault.on('delete', (file: obsidian.TAbstractFile) => {
 				if (!(file instanceof obsidian.TFile)) return;
 				tracker.record(this.app, file, 'delete');
