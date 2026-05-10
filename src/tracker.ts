@@ -2,12 +2,20 @@ import * as obsidian from 'obsidian';
 
 export type EventType = 'open' | 'delete';
 
+interface DeviceInfo {
+	platform: 'desktop' | 'mobile';
+	formFactor: 'phone' | 'tablet' | 'desktop';
+	os: 'android' | 'ios' | 'macos' | 'windows' | 'linux' | 'unknown';
+	userAgent: string;
+}
+
 interface FileEvent {
 	path: string;
 	ts: number;
 	isoDate: string;
 	vaultName: string;
 	eventType: EventType;
+	device: DeviceInfo;
 }
 
 function uuidv7(): string {
@@ -32,6 +40,23 @@ function uuidv7(): string {
 	].join('-');
 }
 
+function deviceInfo(): DeviceInfo {
+	const p = obsidian.Platform;
+	let os: DeviceInfo['os'] = 'unknown';
+	if (p.isAndroidApp) os = 'android';
+	else if (p.isIosApp) os = 'ios';
+	else if (p.isMacOS) os = 'macos';
+	else if (p.isWin) os = 'windows';
+	else if (p.isLinux) os = 'linux';
+
+	return {
+		platform: p.isDesktop ? 'desktop' : 'mobile',
+		formFactor: p.isPhone ? 'phone' : p.isTablet ? 'tablet' : 'desktop',
+		os,
+		userAgent: navigator.userAgent,
+	};
+}
+
 export function record(app: obsidian.App, file: obsidian.TFile, eventType: EventType): void {
 	const now = Date.now();
 	const event: FileEvent = {
@@ -40,6 +65,7 @@ export function record(app: obsidian.App, file: obsidian.TFile, eventType: Event
 		isoDate: new Date(now).toISOString(),
 		vaultName: app.vault.getName(),
 		eventType,
+		device: deviceInfo(),
 	};
 	const filename = `tundratoad-${uuidv7()}.json`;
 	app.vault.adapter.write(filename, JSON.stringify(event, null, 2) + '\n').catch(console.error);
