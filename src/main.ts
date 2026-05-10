@@ -16,5 +16,12 @@ export default class TundraToadPlugin extends obsidian.Plugin {
 				tracker.record(this.app, file, 'delete');
 			})
 		);
+
+		this.registerEvent(
+			this.app.vault.on('rename', (file: obsidian.TAbstractFile, oldPath: string) => {
+				if (!(file instanceof obsidian.TFile)) return;
+				tracker.record(this.app, file, 'rename', oldPath);
+			})
+		);
 	}
 }

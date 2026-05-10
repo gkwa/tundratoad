@@ -1,6 +1,6 @@
 import * as obsidian from 'obsidian';
 
-export type EventType = 'open' | 'delete';
+export type EventType = 'open' | 'delete' | 'rename';
 
 interface DeviceInfo {
 	platform: 'desktop' | 'mobile';
@@ -11,6 +11,8 @@ interface DeviceInfo {
 
 interface FileEvent {
 	path: string;
+	fromPath?: string;
+	toPath?: string;
 	ts: number;
 	isoDate: string;
 	vaultName: string;
@@ -57,7 +59,7 @@ function deviceInfo(): DeviceInfo {
 	};
 }
 
-export function record(app: obsidian.App, file: obsidian.TFile, eventType: EventType): void {
+export function record(app: obsidian.App, file: obsidian.TFile, eventType: EventType, oldPath?: string): void {
 	const now = Date.now();
 	const event: FileEvent = {
 		path: file.path,
@@ -67,6 +69,10 @@ export function record(app: obsidian.App, file: obsidian.TFile, eventType: Event
 		eventType,
 		device: deviceInfo(),
 	};
+	if (eventType === 'rename' && oldPath !== undefined) {
+		event.fromPath = oldPath;
+		event.toPath = file.path;
+	}
 	const filename = `tundratoad-${uuidv7()}.json`;
 	app.vault.adapter.write(filename, JSON.stringify(event, null, 2) + '\n').catch(console.error);
 }
