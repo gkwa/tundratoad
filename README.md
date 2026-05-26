@@ -45,7 +45,7 @@ Over time the event logs accumulate in the vault root and inflate the file count
 Run `move_logs.py` periodically to relocate accumulated logs to `data/`:
 
 ```sh
-uv run move_logs.py
+uv run move_logs.py data
 ```
 
 The script moves files, never deletes them.
@@ -53,7 +53,7 @@ The script moves files, never deletes them.
 Pass `--dry-run` to preview without moving:
 
 ```sh
-uv run move_logs.py --dry-run
+uv run move_logs.py data --dry-run
 ```
 
 Query the relocated logs with keenkitten to rank notes by access frequency:

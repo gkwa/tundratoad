@@ -5,12 +5,17 @@ import sys
 
 
 VAULT = pathlib.Path("/Users/mtm/Documents/Obsidian Vault")
-DATA = pathlib.Path(__file__).parent / "data"
 
 
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Move tundratoad event logs from the vault to data/ and report counts"
+        description="Move tundratoad event logs from the vault to a target directory and report counts"
+    )
+    parser.add_argument(
+        "dest",
+        type=pathlib.Path,
+        metavar="DEST",
+        help="Directory to move logs into",
     )
     parser.add_argument(
         "--vault",
@@ -18,13 +23,6 @@ def _parse_args() -> argparse.Namespace:
         default=VAULT,
         metavar="DIR",
         help=f"Vault root to scan (default: {VAULT})",
-    )
-    parser.add_argument(
-        "--dest",
-        type=pathlib.Path,
-        default=DATA,
-        metavar="DIR",
-        help=f"Destination directory (default: {DATA})",
     )
     parser.add_argument(
         "--dry-run",
