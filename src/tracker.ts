@@ -60,6 +60,7 @@ function deviceInfo(): DeviceInfo {
 }
 
 export function record(app: obsidian.App, file: obsidian.TFile, eventType: EventType, oldPath?: string): void {
+	if (file.name.startsWith('tundratoad-')) return;
 	const now = Date.now();
 	const event: FileEvent = {
 		path: file.path,
